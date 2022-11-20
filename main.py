@@ -37,6 +37,9 @@ def main():
     summarizer = Summary(df_daily_summary.sort_values('date'))
     n_business = df_daily_summary['name'].nunique()
     all_business = df_daily_summary['name'].unique()
+    business_order = dict(zip(sorted(all_business), list(range(len(all_business)))))
+    
+
     # business_colormap = dict(zip(all_business, ['#f7b32b', '#08605f', '#8e4162', '#b3cdd1', '#c7f0bd', '#bbe5ed', '#9f4a54', '#fff07c', '#ff7f11', '#ff1b1c', '#edc9ff', '#f2b79f', '#0c6291', '#231123']))
     all_date = pd.to_datetime(df_daily_summary['date'].unique())
     up_to_date = all_date.max()
@@ -68,11 +71,9 @@ def main():
                 selected = df_latest.loc[df_latest['이름'] == selected_name].to_dict('records')[0]
                 
                 # url = selected['profile picture url']
-                path_name = selected['이름']
-                for i in [' ', '.', '•', '@', '|', 'ㅣ', '&']:
-                    path_name = path_name.replace(i, '')
-                st.write(path_name)
-                url = f"img/business/{path_name}.jpeg"
+                
+                
+                url = f"img/business/{business_order[selected['이름']]}.jpeg"
                 st.image(url)
                 
 
