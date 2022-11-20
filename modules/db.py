@@ -10,7 +10,7 @@ def _connect_db():
     return db_connection
 
 @st.experimental_memo(ttl=600)
-def load_data(db_names:str|list):
+def load_data(db_names):
     db_connection = _connect_db()
     if isinstance(db_names, str):
         return pd.read_sql_table(table_name = db_names, con = db_connection)
