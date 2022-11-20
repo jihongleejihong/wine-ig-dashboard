@@ -68,7 +68,11 @@ def main():
                 selected = df_latest.loc[df_latest['이름'] == selected_name].to_dict('records')[0]
                 
                 # url = selected['profile picture url']
-                url = f"img/business/{selected['이름'].replace(' ', '_')}.jpeg"
+                path_name = selected['이름']
+                for i in [' ', '.', '•', '@', '|', 'ㅣ', '&']:
+                    path_name = path_name.replace(i, '')
+                st.write(path_name)
+                url = f"img/business/{path_name}.jpeg"
                 st.image(url)
                 
 
