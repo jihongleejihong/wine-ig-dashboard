@@ -28,9 +28,9 @@ def click_business(all_business, selected_name):
         del st.session_state.wba9
 
 def main():
-    daily_summary, media = load_data(['daily_summary', 'latest_media'])
-    # daily_summary = pd.read_csv('data/df_daily_summary.csv')
-    # media = pd.read_csv('data/updated_media.csv')
+    # daily_summary, media = load_data(['daily_summary', 'latest_media'])
+    daily_summary = pd.read_csv('sample_data/sample_daily_summary.csv')
+    media = pd.read_csv('sample_data/sample_latest_media.csv')
     
     df_daily_summary = daily_summary.copy()
     df_daily_summary['date'] = pd.to_datetime(df_daily_summary['date'])
@@ -48,7 +48,7 @@ def main():
         selected_name = st.selectbox('보고 싶은 계정', all_business, index=3, on_change = update_business)
         period =  st.selectbox('증감 대비 기준', options = period_range, format_func= lambda x: str(x)+'일 전')
 
-        # st.markdown("jihong2jihong@gmail.com")
+        st.info("<This site is a sample copy.>", icon="💡")
 
     df_daily_summary = summarizer.get_summaries(summary_func=['diff', 'pct_change'], periods = [period])
     df_latest = df_daily_summary.loc[df_daily_summary['date'] == up_to_date].reset_index(drop = True)    

@@ -17,7 +17,8 @@ def main():
     
     report_init = pd.to_datetime(datetime(2022, 10, 3, 12, 0, tzinfo = timezone(timedelta(hours = 9))))
     
-    current_time = pd.to_datetime(datetime.now(tz = timezone(timedelta(hours=9))))
+    # current_time = pd.to_datetime(datetime.now(tz = timezone(timedelta(hours=9))))
+    current_time = pd.to_datetime(datetime(2022, 10, 11, 12, 0, tzinfo = timezone(timedelta(hours = 9))))
 
     report_period = pd.date_range(start = report_init, end = current_time, freq = '7D')
     
@@ -26,27 +27,33 @@ def main():
         report_end = st.selectbox(label = '주차', options = report_period[::-1], format_func = get_week_num)
         report_start = pd.to_datetime(report_end - timedelta(days = 7))
         report_date = report_end
+        st.info("<This site is a sample copy.>", icon="💡")
         
-    df_weekly_summary = load_data('weekly_summary')
-    weekly_media = get_by_query(f"SELECT * FROM test_weekly_media WHERE date > '{date_format(report_start, '-')}'")
+    # df_weekly_summary = load_data('weekly_summary')
+    # weekly_media = get_by_query(f"SELECT * FROM test_weekly_media WHERE date > '{date_format(report_start, '-')}'")
+    df_weekly_summary = pd.read_csv('sample_data/sample_weekly_summary.csv')
+    df_weekly_summary['날짜'] = pd.to_datetime(df_weekly_summary['날짜'])
+    weekly_media = pd.read_csv('sample_data/sample_weekly_media.csv')
+    weekly_media = weekly_media.loc[weekly_media['timestamp'].between(date_format(report_start, format = '-'), date_format(report_end, format = '-'))]
+    # get_by_query(f"SELECT * FROM test_weekly_media WHERE date > '{date_format(report_start, '-')}'")
     
-    if not date_format(report_date) in date_format(df_weekly_summary['날짜']).tolist():
-        with st.spinner(text="Updating data for weekly reports"):
-            df_daily_summary = load_data('daily_summary')
-            df_daily_summary['date'] = pd.to_datetime(df_daily_summary['date'])
-            summarizer = Summary(df_daily_summary.sort_values('date'))
-            df_weekly_summary = summarizer.get_summaries(summary_func=['diff', 'pct_change'], periods = [7])
-            df_weekly_summary.columns = translate(df_weekly_summary.columns)
-            df_weekly_summary = df_weekly_summary.loc[df_weekly_summary['날짜'].dt.dayofweek == 0]
+    # if not date_format(report_date) in date_format(df_weekly_summary['날짜']).tolist():
+    #     with st.spinner(text="Updating data for weekly reports"):
+    #         df_daily_summary = load_data('daily_summary')
+    #         df_daily_summary['date'] = pd.to_datetime(df_daily_summary['date'])
+    #         summarizer = Summary(df_daily_summary.sort_values('date'))
+    #         df_weekly_summary = summarizer.get_summaries(summary_func=['diff', 'pct_change'], periods = [7])
+    #         df_weekly_summary.columns = translate(df_weekly_summary.columns)
+    #         df_weekly_summary = df_weekly_summary.loc[df_weekly_summary['날짜'].dt.dayofweek == 0]
             
-            insert_data(df_weekly_summary.loc[df_weekly_summary['날짜'] == df_weekly_summary['날짜'].max()], 'weekly_summary')   
+    #         insert_data(df_weekly_summary.loc[df_weekly_summary['날짜'] == df_weekly_summary['날짜'].max()], 'weekly_summary')   
     
-    if weekly_media.empty:
-          with st.spinner(text="Updating data for weekly reports"):
-            media = load_data('latest_media')
-            weekly_media = media.loc[media['timestamp'].between(date_format(report_start, format = '-'), date_format(report_end, format = '-'))]
-            weekly_media['engagement'] = weekly_media['like_count'] + weekly_media['comments_count']
-            insert_data(weekly_media, 'weekly_media')      
+    # if weekly_media.empty:
+    #       with st.spinner(text="Updating data for weekly reports"):
+    #         media = load_data('latest_media')
+    #         weekly_media = media.loc[media['timestamp'].between(date_format(report_start, format = '-'), date_format(report_end, format = '-'))]
+    #         weekly_media['engagement'] = weekly_media['like_count'] + weekly_media['comments_count']
+    #         insert_data(weekly_media, 'weekly_media')      
        
     df_plot_weekly = df_weekly_summary[(df_weekly_summary['날짜'].dt.dayofweek == report_date.dayofweek)]
     
