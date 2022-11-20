@@ -59,7 +59,7 @@ def main():
     
     df_plot_weekly['날짜'] = date_format(df_plot_weekly['날짜'])
     all_business = sorted(df_weekly_summary['이름'].unique().tolist())
-    
+    business_order = dict(zip(sorted(all_business), list(range(len(all_business)))))
     with st.sidebar:
         with st.expander('그래프에 포함'):
             selected_business = []
@@ -89,7 +89,7 @@ def main():
             
 
         with col2:
-            image_path = f"img/business/{target_business}.jpeg"
+            image_path = f"img/business/{business_order[target_business]}.jpeg"
             st.image(image_path)
 
         st_header('', num = 1)        
