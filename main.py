@@ -67,7 +67,8 @@ def main():
             with st.container():
                 selected = df_latest.loc[df_latest['이름'] == selected_name].to_dict('records')[0]
                 
-                url = selected['profile picture url']
+                # url = selected['profile picture url']
+                url = f"img/business/{selected['이름']}.jpeg"
                 st.image(url)
                 
 
@@ -150,13 +151,14 @@ def main():
                     with st.container():
                         media_time = date_format(selected_media[view_index + c]['timestamp'])
                         st.caption(media_time)
-                        media_url = selected_media[view_index + c]['media_url']
-                        if pd.isnull(media_url):
-                            media_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
-                        if selected_media[view_index + c]['media_type'] == 'VIDEO':
-                            st.video(media_url)
-                        else:
-                            st.image(media_url)
+                        # media_url = selected_media[view_index + c]['media_url']
+                        media_url = 'img/sample.png'
+                        # if pd.isnull(media_url):
+                        #     media_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
+                        # if selected_media[view_index + c]['media_type'] == 'VIDEO':
+                        #     st.video(media_url)
+                        # else:
+                        st.image(media_url)
                         st.markdown(f'''
                         ❤️ {selected_media[view_index + c]['like_count']}
                         💬 {selected_media[view_index + c]['comments_count']}

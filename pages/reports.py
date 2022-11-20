@@ -89,7 +89,7 @@ def main():
             
 
         with col2:
-            image_path = f"img/{target_business}.jpeg"
+            image_path = f"img/business/{target_business}.jpeg"
             st.image(image_path)
 
         st_header('', num = 1)        
@@ -190,13 +190,14 @@ def main():
                                     media_time = date_format(er_top3[c]['timestamp'])
                                     st.caption(er_top3[c]['name'])
                                     st.caption(media_time)
-                                    media_url = er_top3[c]['media_url']
-                                    if pd.isnull(media_url):
-                                        media_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
-                                    if er_top3[c]['media_type'] == 'VIDEO':
-                                        st.video(media_url)
-                                    else:
-                                        st.image(media_url)
+                                    # media_url = er_top3[c]['media_url']
+                                    media_url = 'img/sample.png'
+                                    # if pd.isnull(media_url):
+                                    #     media_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
+                                    # if er_top3[c]['media_type'] == 'VIDEO':
+                                    #     st.video(media_url)
+                                    # else:
+                                    st.image(media_url)
                                     st.markdown(f'''
                                     ❤️ {er_top3[c]['like_count']}
                                     💬 {er_top3[c]['comments_count']}
